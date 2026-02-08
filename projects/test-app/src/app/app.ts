@@ -9,32 +9,30 @@ import { MessageScreen,MessageScreenServise } from 'nk-message-screen';
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
+  public loadingService = inject(MessageScreenServise);
+  protected readonly title = signal('My Test App to introduct libraries');
   ngOnInit(): void {
-    // Налаштування теми та показ екрану 
-    this.loadingService.updateTheme({
-      backgroundColor: '#0a0a0c', 
-      textColor: '#e0e0e0',
-      btnBackgroundColor: 'blue',
-      btnTextColor: '#e0e0e0',
-      logoUrl: 'favicon.ico'
-    });
-
-    // Показати екран завантаження
-    this.loadingService.show({
-  type: 'loading',
-  text: 'Завантажуємо ваші скарби...',
-  });
+   this.showLoadingScreen();
 // Імітація помилки після 4 секунд
     setTimeout(() => {
-      // Показуємо екран помилки з можливістю повторити дію
-      this.loadingService.show({
-        type: 'error',
-        text: 'Виникла помилка при завантаженні скарбів.',
-        buttonText: 'Спробувати знову',
-        action:()=>{window.location.reload()}
-      })
+      this.showErrorScreen();
     }, 4000);
   }
-  public loadingService = inject(MessageScreenServise);
-  protected readonly title = signal('test-app');
+
+  // Показати екран завантаження
+  private showLoadingScreen() {
+    this.loadingService.show({
+      type: 'loading',
+      text: 'Завантажуємо ваші скарби...',
+    });
+  }
+  // Показуємо екран помилки з можливістю повторити дію
+  private showErrorScreen() {
+    this.loadingService.show({
+      type: 'error',
+      text: 'Виникла помилка при завантаженні скарбів.',
+      buttonText: 'Спробувати знову',
+      action:()=>{window.location.reload()}
+    });
+  }
 }
