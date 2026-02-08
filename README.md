@@ -18,6 +18,47 @@ Once the server is running, open your browser and navigate to `http://localhost:
 ### `nk-message-screen`
  Компонент для показу екранів завантаження, помилок та повідомлень.
 
+
+### Функціонал бібліотеки
+
+Для роботи з бібліотекою ва потрібно підключти сервіс
+```ts
+import { MessageScreenServise } from 'nk-message-screen';
+```
+Далі створити його інстанс
+```ts
+public loadingService = inject(MessageScreenServise);
+```
+
+### При першій ініціалізації можна задати параметри для виводу екранів
+```ts
+ this.loadingService.updateTheme({
+      backgroundColor: '#0a0a0c', 
+      textColor: '#e0e0e0',
+      btnBackgroundColor: 'blue',
+      btnTextColor: '#e0e0e0',
+      logoUrl: 'favicon.ico'
+    });
+```
+
+### Приклади викликів
+
+Екран завантаження
+```ts
+ this.loadingService.show({
+  type: 'loading',
+  text: 'Завантажуємо ваші скарби...',
+  });
+```
+Екран помилки
+```ts
+   this.loadingService.show({
+        type: 'error',
+        text: 'Виникла помилка при завантаженні скарбів.',
+        buttonText: 'Спробувати знову',
+        action:()=>{window.location.reload()}
+      })
+```
  #### Приклад використання 
  Дивіться прикладд викликів екранв у компоненті нижче
  ```ts 
