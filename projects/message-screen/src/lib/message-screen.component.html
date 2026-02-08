@@ -1,0 +1,24 @@
+@if (screen.isOpen()) {
+      <div class="overlay" 
+           [style.background-color]="screen.theme().backgroundColor"
+           [style.color]="screen.theme().textColor">
+        
+        <div class="container">
+          @if (screen.theme()?.logoUrl; as url) {
+            <img [src]="url" class="logo" alt="Logo">
+          }
+
+          <h1 class="message">{{ screen.data()?.text }}</h1>
+
+          @if (screen.data()?.type === 'loading') {
+            <div class="loader"></div>
+          }
+
+          @if (screen.data()?.buttonText; as btnText) {
+            <button [style.background-color]="screen.theme().btnBackgroundColor" [style.color]="screen.theme().btnTextColor" class="action-btn" (click)="screen.data()?.action?.()">
+              {{ btnText }}
+            </button>
+          }
+        </div>
+      </div>
+    }
