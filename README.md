@@ -66,7 +66,7 @@ export class App implements OnInit {
 І у шаблоні основного компонента на проєкті вказати компонент
 ```html
 <message-screen />
-'''
+```
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
