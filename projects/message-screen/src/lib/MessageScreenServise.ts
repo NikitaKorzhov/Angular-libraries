@@ -5,11 +5,16 @@ export interface MessageScreenTheme {
   textColor: string;
   btnBackgroundColor?: string;
   btnTextColor?: string;
+  errorLogoUrl?: string;
+  defaultLoadingText?: string;
+  defaultErrorText?: string;
+  defaultBtnText?: string;
+  
 }
 
 export interface MessageScreenData {
   type: 'loading' | 'error' | 'info';
-  text: string;
+  text?: string;
   logoUrl?: string;
   buttonText?: string;
   action?: () => void;
@@ -22,8 +27,12 @@ export class MessageScreenServise {
  theme = signal<MessageScreenTheme>({
     backgroundColor: '#ffffff',
     textColor: '#000000',
-    btnBackgroundColor: '#007bff',
-    btnTextColor: '#ffffff'
+    btnBackgroundColor: 'blue',
+    btnTextColor: '#e0e0e0',
+    logoUrl: '',
+    defaultLoadingText: 'Loading...',
+    defaultErrorText: 'An error occurred.',
+    defaultBtnText: 'Retry'
   });
 
   data = signal<MessageScreenData | null>(null);

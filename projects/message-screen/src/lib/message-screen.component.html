@@ -1,24 +1,36 @@
 @if (screen.isOpen()) {
-      <div class="overlay" 
-           [style.background-color]="screen.theme().backgroundColor"
-           [style.color]="screen.theme().textColor">
-        
-        <div class="container">
-          @if (screen.theme()?.logoUrl; as url) {
-            <img [src]="url" class="logo" alt="Logo">
-          }
+  @let theme = screen.theme();
+  @let data = screen.data();
 
-          <h1 class="message">{{ screen.data()?.text }}</h1>
+  <div class="overlay" 
+       [style.background-color]="theme.backgroundColor"
+       [style.color]="theme.textColor">
+    
+    <div class="container">
+      
+      @if (data?.type === 'error' && theme.errorLogoUrl) {
+        <img [src]="theme.errorLogoUrl" class="logo" alt="Error Logo">
+      } @else if (theme.logoUrl) {
+        <img [src]="theme.logoUrl" class="logo" alt="Logo">
+      }
 
-          @if (screen.data()?.type === 'loading') {
-            <div class="loader"></div>
-          }
+      <h1 class="message">
+        {{ data?.text || (data?.type === 'error' ? theme.defaultErrorText : theme.defaultLoadingText) }}
+      </h1>
 
-          @if (screen.data()?.buttonText; as btnText) {
-            <button [style.background-color]="screen.theme().btnBackgroundColor" [style.color]="screen.theme().btnTextColor" class="action-btn" (click)="screen.data()?.action?.()">
-              {{ btnText }}
-            </button>
-          }
-        </div>
-      </div>
-    }
+      @if (data?.type === 'loading') {
+        <div class="loader"></div>
+      }
+      @let btnText = data?.buttonText || theme.defaultBtnText;
+      @if (btnText&&data?.type === 'error') {
+        <button 
+          [style.background-color]="theme.btnBackgroundColor" 
+          [style.color]="theme.btnTextColor" 
+          class="action-btn" 
+          (click)="data?.action?.()">
+          {{ btnText }}
+        </button>
+      }
+    </div>
+  </div>
+}

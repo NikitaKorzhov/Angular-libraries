@@ -22,17 +22,15 @@ export class App implements OnInit {
   // Показати екран завантаження
   private showLoadingScreen() {
     this.loadingService.show({
-      type: 'loading',
-      text: 'Завантажуємо ваші скарби...',
+      type: 'loading'
     });
   }
   // Показуємо екран помилки з можливістю повторити дію
   private showErrorScreen() {
     this.loadingService.show({
       type: 'error',
-      text: 'Виникла помилка при завантаженні скарбів.',
-      buttonText: 'Спробувати знову',
-      action:()=>{window.location.reload()}
+      action:()=>{window.location.reload()
+      }
     });
   }
 }

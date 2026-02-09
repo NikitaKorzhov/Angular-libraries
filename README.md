@@ -30,15 +30,19 @@ import { MessageScreenServise } from 'nk-message-screen';
 public loadingService = inject(MessageScreenServise);
 ```
 
-### При першій ініціалізації можна задати параметри для виводу екранів
+### При першій ініціалізації можна задати параметри для виводу екранів а також встановити параметри за замовчуванням
 ```ts
- this.loadingService.updateTheme({
-      backgroundColor: '#0a0a0c', 
-      textColor: '#e0e0e0',
-      btnBackgroundColor: 'blue',
-      btnTextColor: '#e0e0e0',
-      logoUrl: 'favicon.ico'
-    });
+messageScrenServise.updateTheme({
+            backgroundColor: '#0a0a0c',// фон екрану за замовчуванням
+            textColor: '#e0e0e0',//колір текту повідомлень за замовчуванням
+            btnBackgroundColor: 'blue',//колір фону кнопки за замовчуванням
+            btnTextColor: '#e0e0e0',//колір текту кнопки за замовчуванням
+            logoUrl: 'favicon.ico',//логотип заванаження зза замовчуванням
+            errorLogoUrl:"reload.png",//Логотип помилки за замовчваннням
+            defaultLoadingText: 'Завантажуємо дані...',//Текст екрану завантаження за замовчуванням
+            defaultErrorText: 'Виникла помилка при завантаженні.',//Текст повідомлення про ппомилку за замовчуванням
+            defaultBtnText: 'Спробувати знову'//Текст кнопки на екран помилки за замовчуваннями
+          });
 ```
 
 ### Приклади викликів
@@ -46,17 +50,17 @@ public loadingService = inject(MessageScreenServise);
 Екран завантаження
 ```ts
  this.loadingService.show({
-  type: 'loading',
-  text: 'Завантажуємо ваші скарби...',
+  type: 'loading',//nип екрану
+  text: 'Завантажуємо ваші скарби...',//текст екрану (опціонально)
   });
 ```
 Екран помилки
 ```ts
    this.loadingService.show({
-        type: 'error',
-        text: 'Виникла помилка при завантаженні скарбів.',
-        buttonText: 'Спробувати знову',
-        action:()=>{window.location.reload()}
+        type: 'error',//тип екрану
+        text: 'Виникла помилка при завантаженні скарбів.',//Текст на екрані (опціонально)
+        buttonText: 'Спробувати знову',//Текст кнопки (опціонально)
+        action:()=>{window.location.reload()}//Дія на кнопку
       })
 ```
  #### Приклад використання 
