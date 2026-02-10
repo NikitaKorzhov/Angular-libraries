@@ -31,6 +31,7 @@ public loadingService = inject(MessageScreenServise);
 ```
 
 ### При першій ініціалізації можна задати параметри для виводу екранів а також встановити параметри за замовчуванням
+
 ```ts
 messageScrenServise.updateTheme({
             backgroundColor: '#0a0a0c',// фон екрану за замовчуванням
@@ -65,6 +66,52 @@ messageScrenServise.updateTheme({
 ```
  #### Приклад використання 
  Дивіться прикладд викликів екранв у компоненті нижче
+app.config.ts
+ ```ts
+import { 
+  ApplicationConfig, 
+  inject, 
+  APP_INITIALIZER, // <--- ЦЕЙ ІМПОРТ КРИТИЧНО ВАЖЛИВИЙ
+  provideBrowserGlobalErrorListeners, 
+  provideZonelessChangeDetection 
+} from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app.routes';
+import { MessageScreenServise } from 'nk-message-screen';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
+    provideRouter(routes),
+    {
+      provide: APP_INITIALIZER, 
+      useFactory: () => {
+        const messageScrenServise = inject(MessageScreenServise);
+        
+        return () => {
+          messageScrenServise.updateTheme({
+            backgroundColor: '#0a0a0c', 
+            textColor: '#e0e0e0',
+            btnBackgroundColor: 'blue',
+            btnTextColor: '#e0e0e0',
+            logoUrl: 'favicon.ico',
+            errorLogoUrl:"reload.png",
+            defaultLoadingText: 'Завантажуємо дані...',
+            defaultErrorText: 'Виникла помилка при завантаженні.',
+            defaultBtnText: 'Спробувати знову'
+          });
+          return true;
+        };
+      },
+      multi: true
+    }
+  ]
+};
+```
+app.ts
+
  ```ts 
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -77,34 +124,30 @@ import { MessageScreen,MessageScreenServise } from 'nk-message-screen';
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
+  public loadingService = inject(MessageScreenServise);
+  protected readonly title = signal('My Test App to introduct libraries');
   ngOnInit(): void {
-    // Налаштування теми та показ екрану 
-    this.loadingService.updateTheme({
-      backgroundColor: '#0a0a0c', 
-      textColor: '#e0e0e0',
-      btnBackgroundColor: 'blue',
-      btnTextColor: '#e0e0e0',
-      logoUrl: 'favicon.ico'
-    });
-
-    // Показати екран завантаження
-    this.loadingService.show({
-  type: 'loading',
-  text: 'Завантажуємо ваші скарби...',
-  });
+   this.showLoadingScreen();
 // Імітація помилки після 4 секунд
     setTimeout(() => {
-      // Показуємо екран помилки з можливістю повторити дію
-      this.loadingService.show({
-        type: 'error',
-        text: 'Виникла помилка при завантаженні скарбів.',
-        buttonText: 'Спробувати знову',
-        action:()=>{window.location.reload()}
-      })
+      this.showErrorScreen();
     }, 4000);
   }
-  public loadingService = inject(MessageScreenServise);
-  protected readonly title = signal('test-app');
+
+  // Показати екран завантаження
+  private showLoadingScreen() {
+    this.loadingService.show({
+      type: 'loading'
+    });
+  }
+  // Показуємо екран помилки з можливістю повторити дію
+  private showErrorScreen() {
+    this.loadingService.show({
+      type: 'error',
+      action:()=>{window.location.reload()
+      }
+    });
+  }
 }
 
 ```
