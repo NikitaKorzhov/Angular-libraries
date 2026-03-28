@@ -1,0 +1,8 @@
+<div>
+  <p>This is a test application to demonstrate the usage of libraries.</p>
+  <div>
+    @for (lib of libs;track lib.url){
+      <button (click)="onLib(lib)">{{lib.name}}</button>
+    }
+  </div>
+</div>
